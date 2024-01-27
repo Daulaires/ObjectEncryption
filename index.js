@@ -10,16 +10,31 @@ const { checkCRC } = require('./dependencies/checks/crc.js');
 const encryptClass = new Encrypt();
 const custClassInstance = new CustomClass();
 
+var start = new Date().getTime();
 // if none then default to their username of ther windows account
 
 const app = express();
 
 (async () => {
-    // set the path to the FrontEnd
-    app.use(express.static('.\\dependencies\\FrontEnd\\'), express.json({ limit: '1mb' }));
-    
+
+
+    // set the path to the Backend
     function Main() {
-        var start = new Date().getTime();
+
+        // set the path to the FrontEnd
+        app.use(express.static('dependencies/FrontEnd/'));
+        app.use(express.static('dependencies/FrontEnd/js/'));
+        app.use(express.static('dependencies/FrontEnd/css/'));
+        
+        app.use(express.json());
+
+        app.use(express.urlencoded({ extended: true }));
+
+        // set the headers
+        app.use(function (req, res, next) {
+            console.log("Headers set");
+            next();
+        });
 
         // define a map
         const classMap = defineMap(custClassInstance);
@@ -67,19 +82,11 @@ const app = express();
 
             }
         }
-        app.use(express.json());
-
-        // when someone loads the page print out the data
-        app.get('*', (request, response) => {
-            console.log('I got a GET request!');
-            response.json({
-                status: 'success',
-                data: decryptedData,
-            });
-        });
 
         // get the path to the Backend
-        app.listen(3000, () => console.log('listening at 3000'));   
+        app.listen(3000, '192.168.1.73', function () {
+            console.log('Listening on port 3000');
+        });
     }
 
     if (require.main === module) {
