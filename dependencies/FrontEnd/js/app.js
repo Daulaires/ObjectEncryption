@@ -4,34 +4,22 @@ const {CompareTest, SomeDivision, IsUserLoaded, SetScriptContents} = require('./
 const {checkIntegrity} = require('../../checks/IntegrityCheck.js');
 const {checkParity} = require('../../checks/parityCheck.js');
 const {checkCRC} = require('../../checks/crc.js');
-const {defineMap} = require('../../utils/defineMap.js');
+const {defineMap, Browser} = require('../../utils/defineMap.js');
+const {ConsoleContents,Decrypt,Send,Txtmsg,_EncryptCheck_,_Encrypt_} = require('./utils/getIds.js');
 const Encrypt = require('../../encryption.js');
 
 
 (async () => {
     
     const encryptClass = new Encrypt();
-    const Decrypt = document.getElementById("Decrypt");
-    const _Encrypt_ = document.getElementById("Encrypt");
-    const _EncryptCheck_ = document.getElementById("EncryptCheck");
-    const Txtmsg = document.getElementById("Txtmsg");
-    const Send = document.getElementById("Send");
-
-
-    // encrypt the map
-    var encryptedData = encryptClass.EncryptData(defineMap());
-
-    // decrypt the map
+    var encryptedData = encryptClass.EncryptDatabrowser(Browser());
     var decryptedData = encryptClass.DecryptData(encryptedData);
-
-    // check the integrity of the map
     var InregrityCheck = checkIntegrity(defineMap(), decryptedData);
     var ParityCheck = checkParity(defineMap(), decryptedData);
     var CRCCheck = checkCRC(defineMap(), decryptedData);
 
-    inputHandler = () => {
-        // 
-    }
+    var User = "Default";
+    var Age = 0;
 
     btnHandler = () => {
         
@@ -40,6 +28,7 @@ const Encrypt = require('../../encryption.js');
             setTimeout(() => {
                 SetScriptContents("You pressed Encrypt", "ScriptContents2");
             }, 1000);
+
             // reset back to default
             setTimeout(() => {
                 SetScriptContents(SomeDivision(), "ScriptContents2");
@@ -51,16 +40,27 @@ const Encrypt = require('../../encryption.js');
             setTimeout(() => {
                 SetScriptContents("You pressed Decrypted", "ScriptContents");
             }, 1000);
-            // reset back to default
             setTimeout(() => {
-                SetScriptContents(Object.values(IsUserLoaded()), "ScriptContents");
+                SetScriptContents(Object.values(IsUserLoaded(User, 0)), "ScriptContents");
             }, 4000);
         });
 
-        _EncryptCheck_.addEventListener("click", function(){
+        _EncryptCheck_.addEventListener("change", function(){
+            // Set that the user pressed it
             setTimeout(() => {
                 SetScriptContents("You pressed Encrypt Check", "ScriptContents2");
             }, 1000);
+
+            if (_EncryptCheck_.checked){
+                
+            } else {
+                console.log("You unchecked the box");
+            }
+            
+            // reset back to default
+            setTimeout(() => {
+                SetScriptContents(SomeDivision(), "ScriptContents2");
+            }, 4000);
         });
 
         Send.addEventListener("click", function(){
@@ -70,34 +70,70 @@ const Encrypt = require('../../encryption.js');
                 // while this is checked we will encrypt the data
                 const xtx = encryptClass.EncryptString(Txtmsg.value);
                 console.log("xtx: ", xtx);
-            } else {
-            console.log("Send: ", Txtmsg.value);
-            }
+                if (ConsoleContents.innerHTML === "") {
+                    ConsoleContents.innerHTML = IsUserLoaded(User, Age).name + ": " + xtx;
+                } else {
+                    // limit how many messages can be shown in the console
+                    if (ConsoleContents.innerHTML.split("<br>").length < 10){
+                        ConsoleContents.innerHTML += "<br>" + IsUserLoaded(User,Age).name + ": " + xtx;
+                    } else {
+                        // remove the first message and add the new message to the end
+                        var split = ConsoleContents.innerHTML.split("<br>");
+                        split.shift();
+                        split.push(IsUserLoaded(User,Age).name + ": " + xtx);
+                        ConsoleContents.innerHTML = split.join("<br>");
+                    }
+                }
+            } 
+            else {
+                console.log("Send: ", Txtmsg.value);
+                // if ConsoleContents is empty then set it to the value of Txtmsg if it's not empty add the value of Txtmsg to the end of ConsoleContents
+                if (ConsoleContents.innerHTML === ""){
+                    ConsoleContents.innerHTML = IsUserLoaded(User,Age).name + ": " + Txtmsg.value;
+                } else {
+                    // limit how many messages can be shown in the console
+                    if (ConsoleContents.innerHTML.split("<br>").length < 10){
+                        ConsoleContents.innerHTML += "<br>" + IsUserLoaded(User,Age).name + ": " + Txtmsg.value;
+                    } else {
+                        // remove the first message and add the new message to the end
+                        var split = ConsoleContents.innerHTML.split("<br>");
+                        split.shift();
+                        split.push(IsUserLoaded(User,Age).name + ": " + Txtmsg.value);
+                        ConsoleContents.innerHTML = split.join("<br>");
+                    }
+                }
+            } 
+            
             if (Txtmsg.value === ""){
+                ConsoleContents.innerHTML = "You didn't type anything";
                 console.log("You didn't type anything");
+                Console
                 return;
             } 
+            
             if (Txtmsg.value === encryptClass.EncryptionKey.toString()){
                 console.log("Hello you typed the encryption key");
             }
+            
             setTimeout(() => {
                 SetScriptContents("You sent: " + Txtmsg.value, "ScriptContents2");
             }, 1000);
+            
             // reset back to default
             setTimeout(() => {
                 SetScriptContents(SomeDivision(), "ScriptContents2");
             }, 4000);
+
         });
 
     }
 
-    SetScriptContents(Object.values(IsUserLoaded()), "ScriptContents");
+    SetScriptContents(Object.values(IsUserLoaded(User,Age)), "ScriptContents");
     SetScriptContents(SomeDivision(), "ScriptContents2");
     SetScriptContents("Checksums: " + InregrityCheck.replace(/\x1b\[[0-9;]*m/g, ''), "CheckSums");
     SetScriptContents("Parity: " + ParityCheck.replace(/\x1b\[[0-9;]*m/g, ''), "Parity");
     SetScriptContents("CRC: " + CRCCheck.replace(/\x1b\[[0-9;]*m/g, ''), "CRC");
-
-    inputHandler();
+    
     btnHandler();
 })();
 

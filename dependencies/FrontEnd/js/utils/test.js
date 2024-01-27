@@ -19,11 +19,10 @@ module.exports =
 
         return c;
     },
-    IsUserLoaded:function(){
+    IsUserLoaded:function(Vname, vage){
         var user = {
-            name: 'John',
-            age: 0,
-            isAdmin: true
+            name: Vname,
+            age: vage
           };
         return user;
     },
@@ -31,9 +30,12 @@ module.exports =
     SetScriptContents:function(data, Name){
         var script = document.getElementById(Name);
         script.textContent = "This is the script contents";
+        script.textContent = data;
         if (data !== undefined)
         {
             script.textContent = data;
+        } else {
+            script.textContent = "This is the script contents";
         }
     }
 }
