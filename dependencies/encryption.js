@@ -57,8 +57,6 @@ class Encrypt{
     
     EncryptData(data){
         var encryptedData = data;
-        
-        // if it's a map, then encrypt the keys
         if (data instanceof Map){
             return this.EncryptMap(data);
         }
@@ -68,7 +66,6 @@ class Encrypt{
         if (data instanceof Object){
             return this.EncryptObject(data);
         }
-        // if number
         if (data instanceof Number){
             return this.EncryptNumber(data);
         }
@@ -76,24 +73,39 @@ class Encrypt{
         return encryptedData;
     }
 
+    EncryptDatabrowser(data){
+        var data = data;
+        if (data instanceof Map){
+            return this.EncryptMap(data);
+        }
+        if (data instanceof String){
+            return this.EncryptString(data);
+        }
+        if (data instanceof Object){
+            return this.EncryptObject(data);
+        }
+        if (data instanceof Number){
+            return this.EncryptNumber(data);
+        }
+        const buffer = Buffer.from(JSON.stringify(data));
+        // replace any unknown characters and if the length is greater than 6 then we need to remove the last 6 characters
+        var string = buffer.toString('base64').replace(/[^a-zA-Z0-9]/g, '').substring(0, 6);
+
+
+        return string;
+    }
+
     DecryptData(data){
         var decryptedData = data;
-
-        // console.log(typeof data ? data instanceof Map : 'not a map');
-
-        // if it's a map, then decrypt the keys
         if (data instanceof Map){
             return this.DecryptMap(data);
         }
-
         if (data instanceof String){
             return this.DecryptString(data);
         } 
-
         if (data instanceof Object){
             return this.DecryptObject(data);
         }
-
         // if number
         if (data instanceof Number){
             return this.DecryptNumber(data);
