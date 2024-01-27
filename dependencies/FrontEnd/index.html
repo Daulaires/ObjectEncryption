@@ -1,25 +1,34 @@
-<DOCTYPE html>
-<html>
-<head>
-    <title>FrontEnd</title>
-    <link rel="stylesheet" type="text/css" href="css/style.css">
-</head>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>FrontEnd</title>
+        <link rel="stylesheet" type="text/css" href="css/style.css">
+        <meta http-equiv="Content-Security-Policy" content=" child-src 'none';">
+    </head>
 <body>
-    <div style="text-align: center;" id="ScriptContents"></div>
-    <div style="text-align: center;" id="ScriptContents2"></div>
-    <div style="text-align: center;" id="Days"></div>
-    <div style="text-align: center;" id="Compare"></div>
-    <div style="text-align: center;" id="CheckSums"></div>
-    <div style="text-align: center;" id="Parity"></div>
-    <div style="text-align: center;" id="CRC"></div>
+    <div id="container">
+        <div style="text-align: center;" id="ScriptContents"></div>
+        <div style="text-align: center;" id="ScriptContents2"></div>
+        <div style="text-align: center;" id="Days"></div>
+        <div style="text-align: center;" id="Compare"></div>
+        <div style="text-align: center;" id="CheckSums"></div>
+        <div style="text-align: center;" id="Parity"></div>
+        <div style="text-align: center;" id="CRC"></div>
+    </div>
     <input type="text" id="Txtmsg" placeholder="Enter text here...">
-    <input type="checkbox" id="EncryptCheck" name="EncryptCheck" value="EncryptCheck">
-    <label for="EncryptCheck">Encrypt</label>
     <div id="buttonContainer">
         <button id="Decrypt">Decrypt</button>
         <button id="Encrypt">Encrypt</button>
         <button id="Send">Send</button>
-    </div>    
+        <label for="EncryptCheck">Enable Encryption</label>
+        <input type="checkbox" id="EncryptCheck">
+    </div>
+    <div id="Console">
+        <div id="ConsoleHeader">Console</div>
+        <div id="ConsoleContents"></div>
+    </div>
     <script src="./js/utils/bundle.js"></script>
 </body>
 </html>
