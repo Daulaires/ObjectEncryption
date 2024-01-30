@@ -34,7 +34,7 @@ module.exports = {
         // convert it to a buffer
         const buffer = Buffer.from(JSON.stringify(classMap));
         // convert it to a string
-        const string = buffer.toString('base64').charCodeAt(0);
+        const string = buffer.toString('base64');
         return string;
     }
 }

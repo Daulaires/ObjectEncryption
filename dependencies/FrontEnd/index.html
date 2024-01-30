@@ -3,32 +3,46 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>FrontEnd</title>
+        <meta content="IE=edge" http-equiv="X-UA-Compatible">
+        <meta content="FrontEnd" name="description">
+        <meta content="FrontEnd" name="author">
+        <meta content="FrontEnd" name="keyword">
+        <link rel="shortcut icon" href="img/2.png">
         <link rel="stylesheet" type="text/css" href="css/style.css">
-        <meta http-equiv="Content-Security-Policy" content=" child-src 'none';">
+        <title>Daulaires Chat</title>
     </head>
-<body>
+    <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+    <script src="./js/utils/socket/socket.js" type="text/javascript"></script>    
+    <body>
+
     <div id="container">
-        <div style="text-align: center;" id="ScriptContents"></div>
-        <div style="text-align: center;" id="ScriptContents2"></div>
-        <div style="text-align: center;" id="Days"></div>
-        <div style="text-align: center;" id="Compare"></div>
-        <div style="text-align: center;" id="CheckSums"></div>
-        <div style="text-align: center;" id="Parity"></div>
-        <div style="text-align: center;" id="CRC"></div>
+        <div id="ScriptContents"></div>
+        <div id="ScriptContents2"></div>
+        <div id="Days"></div>
+        <div id="Compare"></div>
+        <div id="CheckSums"></div>
+        <div id="CRC"></div>
+        <div id="Parity"></div>
+        <div id="EncryptedCheck"></div>
     </div>
-    <input type="text" id="Txtmsg" placeholder="Enter text here...">
+    <div id="notification">
+        <div id="notificationHeader"></div>
+        <div id="notificationContents"></div>
+    </div>
     <div id="buttonContainer">
-        <button id="Decrypt">Decrypt</button>
-        <button id="Encrypt">Encrypt</button>
         <button id="Send">Send</button>
-        <label for="EncryptCheck">Enable Encryption</label>
+        <button id="CreateDM">Create DM</button>
+        <button id="Encrypt" style="opacity: 0;"></button>
+        <label for="EncryptCheck">Encryption</label>
         <input type="checkbox" id="EncryptCheck">
     </div>
+    <button id="ToggleButtons">Toggle Buttons</button>
     <div id="Console">
         <div id="ConsoleHeader">Console</div>
-        <div id="ConsoleContents"></div>
+        <div id="ConsoleContents" style="scroll-behavior: smooth"></div>
     </div>
+    <input type="text" id="Txtmsg" placeholder="Enter text here...">
+    <input type="text" id="username" placeholder="Username">
     <script src="./js/utils/bundle.js"></script>
 </body>
 </html>

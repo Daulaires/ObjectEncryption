@@ -106,7 +106,6 @@ class Encrypt{
         if (data instanceof Object){
             return this.DecryptObject(data);
         }
-        // if number
         if (data instanceof Number){
             return this.DecryptNumber(data);
         }

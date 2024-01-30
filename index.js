@@ -2,7 +2,6 @@ const { CustomClass } = require('./dependencies/customclass.js');
 const Encrypt = require('./dependencies/encryption.js');
 const express = require('express');
 const { defineMap } = require('./dependencies/utils/defineMap.js');
-
 const { checkIntegrity } = require('./dependencies/checks/IntegrityCheck.js');
 const { checkParity } = require('./dependencies/checks/parityCheck.js');
 const { checkCRC } = require('./dependencies/checks/crc.js');
@@ -14,27 +13,16 @@ var start = new Date().getTime();
 // if none then default to their username of ther windows account
 
 const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
+const hostname = '192.168.1.73';
+const port = 443;
 
 (async () => {
 
 
     // set the path to the Backend
     function Main() {
-
-        // set the path to the FrontEnd
-        app.use(express.static('dependencies/FrontEnd/'));
-        app.use(express.static('dependencies/FrontEnd/js/'));
-        app.use(express.static('dependencies/FrontEnd/css/'));
-        
-        app.use(express.json());
-
-        app.use(express.urlencoded({ extended: true }));
-
-        // set the headers
-        app.use(function (req, res, next) {
-            console.log("Headers set");
-            next();
-        });
 
         // define a map
         const classMap = defineMap(custClassInstance);
@@ -82,10 +70,79 @@ const app = express();
 
             }
         }
+        
+        // set the path to the FrontEnd
+        app.get('/', function(req, res) {
+            // if (!req.secure && req.get('X-Forwarded-Proto') !== 'https' && process.env.NODE_ENV !== "development") {
+            //     return res.redirect('https://' + req.get('host') + req.url);
+            // }
+            app.use(express.static('dependencies/FrontEnd'));
+            // create a route to the FrontEnd
+            res.sendFile(__dirname + '/dependencies/FrontEnd/index.html');
+            // now we set the headers 
+            res.setHeader('Content-Type', 'text/html');
+        });
+
+        io.on('connection', (socket) => {
+            socket.on('join', (data) => {
+                console.log(data);
+            });
+            socket.on('encrypt', (data) => {
+                console.log(data);
+            });
+            socket.on('decrypt', (data) => {
+                console.log(data);
+            });
+            
+            socket.on('createDM', (data) => {
+                console.log(data);
+            });
+
+            socket.on('send', (data)=>{
+                console.log(data);
+            });
+
+            socket.on('updateConsoleContents', (data) => {
+                console.log(data);
+                const { user, message } = data;
+                
+                // now we check if their objects
+                if (user instanceof Object) {
+                    console.log("User: ", user.name + " sent: " + message);
+                } else {
+                    console.log("User: ", user);
+                }
+                
+                // update the html with the message
+                return socket.broadcast.emit('updateConsoleContents', { user: user, message: message });
+            });
+
+            socket.on('encryptCheck', (data) => {
+                // if object then show object contents
+                if (data instanceof Object){
+                    data = Object.values(data);
+                } else {
+                    console.log(data);
+                }
+            });
+            socket.on('user', (data) => {
+                console.log(data);
+            });
+            // print the socke users UserAgent
+            // console.log(socket.handshake.headers['user-agent']);
+            // print the headers of the user that loaded the page
+            // console.log(socket.handshake.headers);
+            // send the data to the FrontEnd
+            socket.on('disconnect', () => {
+                console.log(`${socket.id} disconnected`);
+            });
+
+        })
 
         // get the path to the Backend
-        app.listen(3000, '192.168.1.73', function () {
-            console.log('Listening on port 3000');
+        server.listen(port, hostname, () => {
+            // print the host url
+            console.log(`listening on http://localhost:${port}`);
         });
     }
 
