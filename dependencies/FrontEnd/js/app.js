@@ -1,6 +1,6 @@
 // load the test.js but for a website we need to import the js file
 // fun the test in the app.js
-const {IsUserLoaded, SetContents} = require('./utils/user/test.js');
+const {  SetContents} = require('./utils/user/test.js');
 const { UserObj, AssignUUID, SaveUUID } = require("./utils/user/object/client.js");
 const {SendMessage} = require('./utils/user/utils/Message.js');
 const {checkIntegrity} = require('../../checks/IntegrityCheck.js');
@@ -13,13 +13,11 @@ const { handleCreateDM } = require('./utils/user/handlers/CreateDM.js');
 const { handleEncrypt } = require('./utils/user/handlers/HandleEncrypt.js');
 
 const {
-
     Send,Txtmsg,_Encrypt_,
     _EncryptCheck_,CreateDMBtn,
     ToggleButtons,BtnContainer,
     username,ConsoleContents,
     userToDM,consoleHeader
-    
 } = require('./utils/getIds.js');
 
 const socket = io();
@@ -49,6 +47,18 @@ const { handleSocket } = require('./utils/user/handlers/sockethandler.js');
             SetContents(GetUUID(username.value),"ScriptContents2");
             consoleHeader.textContent = "Welcome " + username.value + "!";
         }
+        socket.on('connect', function() {
+            var name = document.getElementById('name').textContent.split(" ")[3];
+            var uuid = document.getElementById('ScriptContents2');
+            var UA = navigator.userAgent;
+        
+            var user = {
+                name: name,
+                uuid: uuid.textContent,
+                userAgent: UA.toString(),
+            }
+            socket.emit('join', user);
+        });
     }
 
     init();
@@ -126,10 +136,11 @@ const { handleSocket } = require('./utils/user/handlers/sockethandler.js');
         });
 
         ToggleButtons.addEventListener("click", function(){
+            
             if (BtnContainer.style.display == "none"){
+                BtnContainer.classList.add("fadein");
                 BtnContainer.classList.remove("fadeOut");
                 BtnContainer.style.animation = "fadein 2s";
-                BtnContainer.classList.add("fadein");
                 setTimeout(() => {
                     BtnContainer.style.display = "block";
                 }, 2000);
@@ -145,7 +156,7 @@ const { handleSocket } = require('./utils/user/handlers/sockethandler.js');
         return;
     }
     // on change set the SCriptContents
-    SetContents(username.value,"name");
+    SetContents("Logged in as: "+username.value,"name");
     SetContents("Checksums: " + InregrityCheck.replace(/\x1b\[[0-9;]*m/g, ''), "CheckSums");
     SetContents("Parity: " + ParityCheck.replace(/\x1b\[[0-9;]*m/g, ''), "Parity");
     SetContents("CRC: " + CRCCheck.replace(/\x1b\[[0-9;]*m/g, ''), "CRC");

@@ -8,6 +8,7 @@ const { checkCRC } = require('./dependencies/checks/crc.js');
 const encryptClass = new Encrypt();
 const custClassInstance = new CustomClass();
 
+
 var start = new Date().getTime();
 // if none then default to their username of ther windows account
 
