@@ -14,13 +14,13 @@ const GetUUID = (name) => {
 }
 
 socket.on('connect', function() {
-    var name = document.getElementById('ScriptContents').textContent;
-    var uuid = GetUUID(name);
+    var name = document.getElementById('name').textContent;
+    var uuid = document.getElementById('ScriptContents2');
     var UA = navigator.userAgent;
 
     var user = {
-        name: GetUUID(name).key,
-        uuid: uuid.value,
+        name: name,
+        uuid: uuid.textContent,
         userAgent: UA.toString(),
     }
     socket.emit('join', user);

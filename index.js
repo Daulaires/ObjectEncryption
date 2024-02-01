@@ -5,7 +5,6 @@ const { defineMap } = require('./dependencies/utils/defineMap.js');
 const { checkIntegrity } = require('./dependencies/checks/IntegrityCheck.js');
 const { checkParity } = require('./dependencies/checks/parityCheck.js');
 const { checkCRC } = require('./dependencies/checks/crc.js');
-
 const encryptClass = new Encrypt();
 const custClassInstance = new CustomClass();
 
@@ -77,24 +76,27 @@ const port = 443;
             //     return res.redirect('https://' + req.get('host') + req.url);
             // }
             app.use(express.static('dependencies/FrontEnd'));
+            app.use(express.static('dependencies/FrontEnd/js'));
+            app.use(express.static('dependencies/FrontEnd/css'));
             // create a route to the FrontEnd
             res.sendFile(__dirname + '/dependencies/FrontEnd/index.html');
             // now we set the headers 
             res.setHeader('Content-Type', 'text/html');
         });
 
+
         io.on('connection', (socket) => {
+            // get the ip of the user
+            const ip = socket.handshake.address;
+
             socket.on('join', (data) => {
+                // console.log(ip + " joined" + " | " + data.name);
                 console.log(data);
             });
             socket.on('encrypt', (data) => {
                 console.log(data);
             });
             socket.on('decrypt', (data) => {
-                console.log(data);
-            });
-            
-            socket.on('createDM', (data) => {
                 console.log(data);
             });
 
@@ -105,14 +107,14 @@ const port = 443;
             socket.on('updateConsoleContents', (data) => {
                 console.log(data);
                 const { user, message } = data;
-                
+                if (!user || !message) return console.log("User or message is undefined");
                 // now we check if their objects
                 if (user instanceof Object) {
-                    console.log("User: ", user.name + " sent: " + message);
+                    console.log("User:", user.name + " | sent: " + message);
                 } else {
                     console.log("User: ", user);
                 }
-                
+
                 // update the html with the message
                 return socket.broadcast.emit('updateConsoleContents', { user: user, message: message });
             });
@@ -142,7 +144,7 @@ const port = 443;
         // get the path to the Backend
         server.listen(port, hostname, () => {
             // print the host url
-            console.log(`listening on http://localhost:${port}`);
+            console.log(`listening on http://${hostname}:${port}`);
         });
     }
 

@@ -11,39 +11,38 @@
         <link rel="stylesheet" type="text/css" href="css/style.css">
         <title>Daulaires Chat</title>
     </head>
-    <script src="/socket.io/socket.io.js" type="text/javascript"></script>
-    <script src="./js/utils/socket/socket.js" type="text/javascript"></script>    
     <body>
-
-    <div id="container">
-        <div id="ScriptContents"></div>
-        <div id="ScriptContents2"></div>
-        <div id="Days"></div>
-        <div id="Compare"></div>
-        <div id="CheckSums"></div>
-        <div id="CRC"></div>
-        <div id="Parity"></div>
-        <div id="EncryptedCheck"></div>
-    </div>
-    <div id="notification">
-        <div id="notificationHeader"></div>
-        <div id="notificationContents"></div>
-    </div>
-    <div id="buttonContainer">
-        <button id="Send">Send</button>
-        <button id="CreateDM">Create DM</button>
-        <button id="Encrypt" style="opacity: 0;"></button>
-        <label for="EncryptCheck">Encryption</label>
-        <input type="checkbox" id="EncryptCheck">
-    </div>
-    <button id="ToggleButtons">Toggle Buttons</button>
-    <div id="Console">
-        <div id="ConsoleHeader">Console</div>
-        <div id="ConsoleContents" style="scroll-behavior: smooth"></div>
-    </div>
-    <input type="text" id="Txtmsg" placeholder="Enter text here...">
-    <input type="text" id="username" placeholder="Username">
-    <script src="./js/utils/bundle.js"></script>
-</body>
+        <div id="container">
+            <div id="name"></div>
+            <div id="ScriptContents2"></div>
+            <div id="Days"></div>
+            <div id="Compare"></div>
+            <div id="CheckSums"></div>
+            <div id="CRC"></div>
+            <div id="Parity"></div>
+            <div id="EncryptedCheck"></div>
+        </div>
+        <div id="notification">
+            <div id="notificationHeader"></div>
+            <div id="notificationContents"></div>
+        </div>
+        <div id="buttonContainer">
+            <button id="Send">Send</button>
+            <button id="CreateDM">Create DM</button>
+            <button id="Encrypt" style="opacity: 0;"></button>
+            <label for="EncryptCheck">Encryption</label>
+            <input type="checkbox" id="EncryptCheck">
+        </div>
+        <button id="ToggleButtons">Toggle Buttons</button>
+        <div id="Console">
+            <div id="ConsoleHeader">Chat[0]</div>
+            <div id="ConsoleContents" style="scroll-behavior: smooth"></div>
+        </div>
+        <input type="text" id="Txtmsg" placeholder="Enter text here...">
+        <input type="text" id="username" placeholder="Username" autocomplete="on">
+        <input type="text" id="UserToDM" placeholder="User to DM" autocomplete="on">
+        <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+        <script src="./js/utils/socket/socket.js" type="text/javascript"></script>
+        <script src="./js/utils/bundle.js" type="text/javascript"></script> 
+    </body>
 </html>
-</DOCTYPE>

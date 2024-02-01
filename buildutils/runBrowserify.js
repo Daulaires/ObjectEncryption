@@ -13,6 +13,13 @@ async function minifyAndObfuscate() {
     try {
         const result = await terser.minify(inputCode, {
             compress: {
+                ie8: false,
+                keep_fargs: false,
+                passes: 2,
+                sequences: true,
+                unsafe_arrows: false,
+                unsafe_comps: false,
+                unsafe_Function: false,
                 drop_console: true,
                 drop_debugger: true,
                 computed_props: false,

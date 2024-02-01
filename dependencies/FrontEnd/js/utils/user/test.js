@@ -30,7 +30,7 @@ module.exports =
         return user;
     },
     // make a script that gets the <div id="ScriptContents"></div> so we can show off the contents of the script
-    SetScriptContents:function(data, Name){
+    SetContents:function(data, Name){
         var script = document.getElementById(Name);
         script.textContent = "No data";
         script.textContent = data;
